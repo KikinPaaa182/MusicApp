@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Musica</title>
+</head>
+<body>
+
+    <header>
+
+        <div class="logo">
+
+            <div class="logo-icono"></div>
+
+            <h2>Nombre App</h2>
+
+        </div>
+
+        <nav>
+
+            <ul>
+
+                <li><a href="#">Inicio</a></li>
+
+                <li><a href="#">Explorar</a></li>
+
+                <li><a href="#">Rankings</a></li>
+
+                <li><a href="#">Comunidad</a></li>
+
+            </ul>
+
+        </nav>
+
+        <div class="acciones">
+
+            <button>👤</button>
+
+            <button>🌙</button>
+
+        </div>
+
+    </header>
+
+    <main>
+
+        <h1>Buscar Artista</h1>
+
+            <input type="text" id="busqueda">
+
+            <button onclick="buscarArtista()" id="buscar">
+                Buscar
+            </button>
+
+        <h2 id="resultado"></h2>
+
+        <div id="artistaSeleccionado"></div>
+
+        <div id="albumes"></div>
+
+        <div id="eps"></div>
+
+        <div id="singles"></div>
+
+        <div id="detalleAlbum" class="detalle-album"></div>
+
+    </main>
+
+    <footer></footer>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>

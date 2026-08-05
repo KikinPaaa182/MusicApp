@@ -1,0 +1,234 @@
+/* ===========================
+   GENERALES
+=========================== */
+
+body {
+    background-color: #111111;
+    color: #dddddd;
+    text-align: center;
+    font-family:Arial, Helvetica, sans-serif;
+    margin: 0;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+header {
+    background-color: #1b1b1b;
+    color: #ddd;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 18px;
+
+    height: 90px;
+    max-width: 1400px;
+    padding: 0 40px;
+    margin: 20px auto;
+}
+
+.logo {
+    display: flex;
+    text-align: center;
+    gap: 15px;
+}
+
+.logo-icono {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgb(188, 84, 188);
+}
+
+
+nav ul {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav a {
+    color: #dddddd;
+    text-decoration: none;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: rgb(188, 84, 188);
+}
+
+.acciones {
+    display: flex;
+    gap: 15px;
+}
+
+.acciones button {
+    background: none;
+    border: none;
+    color: #dddddd;
+    font-size: 20px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.acciones button:hover {
+    color: rgb(188, 84, 188);
+}
+
+/* ===========================
+   BUSCADOR
+=========================== */
+
+#busqueda {
+    background-color: black;
+    color: rgb(188, 84, 188);
+}
+
+button {
+    background-color: black;
+    color: rgb(188, 84, 188);
+}
+
+/* ===========================
+   DISCOGRAFÍA
+=========================== */
+
+.tarjeta-album {
+    width: 200px;
+    padding: 15px;
+    margin: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.tarjeta-album img{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.grid-musica {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.titulo-seccion {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* =========================
+   DETALLE DEL ÁLBUM
+========================= */
+
+.detalle-album{
+    width: 100%;
+}
+
+.contenedor-album{
+    display: grid;
+    grid-template-columns: 340px minmax(500px, 1fr) 300px;
+    gap: 35px;
+
+    width: min(95%, 1600px);
+    margin: 40px auto;
+    align-items: start;
+    justify-content: center;
+}
+
+/* Panel izquierdo */
+.panel-izquierdo{
+    background: #1b1b1b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.portada-grande{
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.4);
+    margin-bottom: 20px;
+}
+
+.info-album h1{
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.tipo-album{
+    color: rgb(188, 84, 188);
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.dato-album{
+    margin-bottom: 8px;
+    color: #ddd;
+}
+
+/* Panel centro */
+.panel-centro{
+    background: #1b1b1b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.panel-centro h2{
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.cancion-placeholder{
+    padding: 15px;
+    border-bottom: 1px solid #2a2a2a;
+    color: #aaa;
+}
+
+/* Panel derecho */
+.panel-derecho{
+    background: #1b1b1b;
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.panel-derecho h3{
+    margin-bottom: 15px;
+    color: rgb(188, 84, 188);
+}
+
+.dato-artista{
+    margin-bottom: 10px;
+    color: #ddd;
+}
+
+.boton-artista{
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: rgb(188, 84, 188);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.boton-artista:hover{
+    background: rgb(149, 33, 149);
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1000px){
+    .detalle-album{
+        grid-template-columns: 1fr;
+    }
+}
