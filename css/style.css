@@ -2,6 +2,16 @@
    GENERALES
 =========================== */
 
+*{
+
+    margin:0;
+
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
 body {
     background-color: #111111;
     color: #dddddd;
@@ -80,17 +90,261 @@ nav a:hover {
 }
 
 /* ===========================
+   HERO
+=========================== */
+
+.hero {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+
+    animation: aparecerHero .7s ease;
+
+    background: linear-gradient(180deg, rgba(188,84,188,.18), transparent 70%);
+}
+
+.hero-contenido {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 3.4rem;
+    line-height: 1.1;
+    color: #ddd;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #aaa;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+}
+
+/* ===========================
    BUSCADOR
 =========================== */
 
-#busqueda {
-    background-color: black;
-    color: rgb(188, 84, 188);
+.buscador {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 700px;
+    margin: 35px auto 0;
+    padding: 16px 22px;
+    box-sizing: border-box;
+    background: #2a2a2a;
+    border: 2px solid transparent;
+    border-radius: 18px;
+    transition: .25s;
 }
 
-button {
-    background-color: black;
-    color: rgb(188, 84, 188);
+.icono-busqueda {
+    font-size: 1.4rem;
+    color: #aaa;
+}
+
+.buscador input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ddd;
+    font-size: 1.1rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.buscador input::placeholder {
+    color: #888;
+}
+
+.buscador:focus-within {
+    border-color: rgb(188, 84, 188);
+    box-shadow: 0 0 25px rgba(188,84,188,.25);
+}
+
+/* ===========================
+   AUTOCOMPLETE
+=========================== */
+
+#autocomplete {
+    width: 100%;
+    max-width: 700px;
+    margin: 15px auto 0;
+
+    background: #2a2a2a;
+    border-radius: 18px;
+    overflow: hidden;
+    display: none;
+
+    box-shadow: 0 15px 40px rgba(0,0,0,.45);
+    border: 1px solid #333;
+}
+
+.item-autocomplete {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition:
+    background .2s,
+    transform .2s;
+}
+
+.item-autocomplete:hover {
+    background: #333;
+    transform:translateX(6px);
+}
+
+.item-autocomplete img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.item-autocomplete h4 {
+    color: #ddd;
+    margin: 0;
+}
+
+.item-autocomplete p {
+    margin: 4px 0 0;
+    color: #aaa;
+    font-size: .9rem;
+}
+
+/* ===========================
+   TAGS
+=========================== */
+
+.hero-tags{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:15px;
+
+    margin-top:35px;
+
+    flex-wrap:wrap;
+
+}
+
+.hero-tags span {
+    padding: 10px 18px;
+    background: #2a2a2a;
+    color: #ddd;
+    border-radius: 999px;
+    transition: .25s;
+    cursor: default;
+    user-select: none;
+}
+
+.hero-tags span:hover {
+    background-color: rgb(188, 84, 188);
+    transform: translateY(-3px);
+}
+
+@keyframes aparecerHero{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+@media (max-width:768px){
+
+    header{
+
+        flex-direction:column;
+
+        height:auto;
+
+        gap:20px;
+
+        padding:20px;
+
+    }
+
+    nav ul{
+
+        gap:20px;
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+    }
+
+    .hero{
+
+        min-height:auto;
+
+        padding:80px 20px;
+
+    }
+
+    .hero-contenido{
+
+        width:100%;
+
+    }
+
+    .hero h1{
+
+        font-size:2.3rem;
+
+    }
+
+    .hero p{
+
+        font-size:1rem;
+
+        padding:0 10px;
+
+    }
+
+    .buscador{
+
+        width:100%;
+
+        margin-top:30px;
+
+    }
+
+    .hero-tags{
+
+        gap:10px;
+
+        margin-top:25px;
+
+    }
+
 }
 
 /* ===========================

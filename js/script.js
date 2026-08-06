@@ -64,6 +64,77 @@ function buscarArtista() {
     }
 
 // ==========================
+// AUTOCOMPLETE
+// ==========================
+
+function autocompleteArtistas(){
+
+    let texto = document.getElementById("busqueda").value;
+
+    if(texto.length < 2){
+
+        document.getElementById("autocomplete").style.display = "none";
+
+    return;
+    }
+
+    fetch(`https://musicbrainz.org/ws/2/artist/?query=${texto}&fmt=json`)
+
+        .then(respuesta => respuesta.json())
+
+        .then(datos => {
+            let html = "";
+
+            datos.artists.slice(0,5).forEach(artista => {
+
+            html += `
+                <div class="item-autocomplete" 
+                    onclick="seleccionarArtista(
+                    '${artista.id}',
+                    '${artista.name}',
+                    '${artista.country || ""}',
+                    '${artista.area?.name || ""}',
+                    '${artista["life-span"]?.begin || ""}'
+                    )"
+                >
+
+                    <h3>
+                    ${artista.name}
+                    </h3>
+
+                    <p>
+                    País: ${artista.country || artista.area?.name || "Desconocido"}
+                    </p>
+
+                    <hr>
+
+                </div>
+                `;
+        });
+
+            document.getElementById("autocomplete").innerHTML = html;
+
+            document.getElementById("autocomplete").style.display = "block";
+
+    })
+        
+}
+
+function seleccionarArtista(id, nombre, pais, area, inicio){
+
+
+    document.getElementById("busqueda").value = "";
+    document.getElementById("busqueda").blur();
+    
+    document.getElementById("autocomplete").innerHTML = "";
+    document.getElementById("autocomplete").style.display = "none";
+
+    verAlbumes(id, nombre, pais, area, inicio);
+
+}
+
+
+// ==========================
 // ARTISTA
 // ==========================
 
@@ -412,3 +483,21 @@ function mostrarMasSingles(){
     );
 
 }
+
+const inputBusqueda = document.getElementById("busqueda");
+
+inputBusqueda.addEventListener("keydown", function(event){
+
+    if(event.key === "Enter"){
+
+        buscarArtista();
+
+    }
+
+});
+
+inputBusqueda.addEventListener("input", function(){
+
+    autocompleteArtistas();
+
+});

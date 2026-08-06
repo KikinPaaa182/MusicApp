@@ -48,13 +48,52 @@
 
     <main>
 
-        <h1>Buscar Artista</h1>
+        <section class="hero">
 
-            <input type="text" id="busqueda">
+            <div class="hero-contenido">
 
-            <button onclick="buscarArtista()" id="buscar">
-                Buscar
-            </button>
+                <div class="hero-logo">
+
+
+
+                </div>
+
+                <h1>
+                    Descubrí millones de álbumes
+                </h1>
+
+                <p>
+                    Buscá artistas, álbumes, EPs, singles y descubrí toda su historia musical.
+                </p>
+
+                <div class="buscador">
+                
+                    <span class="icono-busqueda">
+                        🔍
+                    </span>
+
+                    <input 
+                        id="busqueda"
+                        type="text" 
+                        placeholder="Buscar un artista..."
+                    >
+
+                </div>
+
+                <div id="autocomplete"></div>
+
+                <div class="hero-tags">
+
+                <span>🎤 Artistas</span>
+                <span>💿 Álbumes</span>
+                <span>📀 EPs</span>
+                <span>🎵 Singles</span>
+
+            </div>
+
+            </div>
+
+        </section>
 
         <h2 id="resultado"></h2>
 
