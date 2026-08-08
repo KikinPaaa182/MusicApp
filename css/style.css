@@ -171,6 +171,279 @@ nav a:hover {
     box-shadow: 0 0 25px rgba(188,84,188,.25);
 }
 
+.buscador-artista{
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    width: 90%;
+
+    max-width: 700px;
+
+    box-sizing: border-box;
+
+    margin: 40px auto;
+
+    padding: 14px 18px;
+
+    background: #222;
+
+    border-radius: 16px;
+
+    border: 1px solid #333;
+
+}
+
+.buscador-artista input{
+ 
+    flex: 1;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    color: #ddd;
+
+    font-size: 1rem;
+
+}
+
+
+/* ===========================
+   TENDENCIAS
+=========================== */
+
+#tendencias {
+    width: 90%;
+
+    max-width: 1440px;
+
+    margin: 80px auto;
+
+}
+
+.titulo-seccion{
+
+    color: rgb(188, 84, 188);
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    text-align: center;
+
+}
+
+.subtitulo-seccion{
+
+    color: #aaa;
+
+    text-align: center;
+
+    margin-top: 12px;
+
+    margin-bottom: 45px;
+
+    font-size: 1rem;
+
+}
+
+
+.tarjeta-artista{
+
+    background:#1b1b1b;
+
+    border-radius:18px;
+
+    padding:28px 20px;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    text-align:center;
+
+    border: 1px solid transparent;
+
+}
+
+.tarjeta-artista:hover{
+
+    transform:translateY(-8px);
+
+    border:1px solid rgb(188,84,188);
+
+    box-shadow: 0 10px 30px rgba(188,84,188,.25);
+
+}
+
+.avatar-artista{
+
+    width: 70px;
+
+    height: 70px;
+
+    margin: 0 auto 18px;
+
+    border-radius: 50%;
+
+    background: rgb(188, 84, 188);
+
+    color: white;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-size: 2rem;
+
+    font-weight: 700;
+
+    transition: .25s;
+
+}
+
+.tarjeta-artista:hover .avatar-artista{
+
+    background:rgb(149,33,149);
+
+    transform:scale(1.08);
+
+}
+
+
+.tarjeta-artista h3{
+
+    color: #ddd;
+
+    font-size: 1.25rem;
+
+    margin-bottom: 10px;
+
+    font-weight: 600;
+
+}
+
+.pais-artista{
+
+    color: #aaa;
+
+    font-size: .95rem;
+
+    margin-bottom: 22px;
+
+}
+
+.estado-artista{
+
+    color:rgb(188,84,188);
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+
+.tarjeta-artista:hover .estado-artista{
+
+    color:rgb(149,33,149);
+
+}
+
+.grid-tendencias {
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    
+    gap: 20px;
+}
+
+/* ===========================
+   DESCUBRÍ
+=========================== */
+
+#descubrir{
+
+    width: 90%;
+
+    max-width: 1000px;
+
+    margin: 90px auto;
+
+}
+
+.card-descubrir{
+
+    background: #1b1b1b;
+
+    border-radius: 22px;
+
+    padding: 60px 40px;
+
+    text-align: center;
+
+    border: 1px solid #333;
+
+}
+
+.card-descubrir h2{
+
+    color: #ddd;
+
+    font-size: 2rem;
+
+    margin-bottom: 18px;
+
+}
+
+.card-descubrir p{
+
+    color: #aaa;
+
+    max-width: 600px;
+
+    margin: 0 auto 35px;
+
+    line-height: 1.6;
+
+}
+
+#btnDescubrir{
+
+    background: rgb(188, 84, 188);
+
+    color: white;
+
+    border: none;
+
+    border-radius: 14px;
+
+    padding: 16px 34px;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+#btnDescubrir:hover{
+
+    background: rgb(149, 33, 149);
+
+    transform:translateY(-3px);
+
+}
+
 /* ===========================
    AUTOCOMPLETE
 =========================== */
@@ -221,6 +494,67 @@ nav a:hover {
     margin: 4px 0 0;
     color: #aaa;
     font-size: .9rem;
+}
+
+#autocompleteArtista {
+
+    width: 90%;
+    max-width: 700px;
+
+    margin: 10px auto 0;
+
+    background: #222;
+
+    border: 1px solid #333;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+}
+
+#autocompleteArtista .item-autocomplete {
+
+    padding: 15px 20px;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+    border-bottom: 1px solid #333;
+
+}
+
+#autocompleteArtista .item-autocomplete:hover {
+
+    background: #2d2d2d;
+
+}
+
+#autocompleteArtista .item-autocomplete h3 {
+
+    margin: 0 0 5px;
+
+    color: #ddd;
+
+    font-size: 1rem;
+
+}
+
+#autocompleteArtista .item-autocomplete p {
+
+    margin: 0;
+
+    color: #999;
+
+    font-size: .85rem;
+
+}
+
+#autocompleteArtista .item-autocomplete:last-child {
+
+    border-bottom: none;
+
 }
 
 /* ===========================
@@ -276,80 +610,138 @@ nav a:hover {
 
 }
 
-
-@media (max-width:768px){
-
-    header{
-
-        flex-direction:column;
-
-        height:auto;
-
-        gap:20px;
-
-        padding:20px;
-
-    }
-
-    nav ul{
-
-        gap:20px;
-
-        flex-wrap:wrap;
-
-        justify-content:center;
-
-    }
-
-    .hero{
-
-        min-height:auto;
-
-        padding:80px 20px;
-
-    }
-
-    .hero-contenido{
-
-        width:100%;
-
-    }
-
-    .hero h1{
-
-        font-size:2.3rem;
-
-    }
-
-    .hero p{
-
-        font-size:1rem;
-
-        padding:0 10px;
-
-    }
-
-    .buscador{
-
-        width:100%;
-
-        margin-top:30px;
-
-    }
-
-    .hero-tags{
-
-        gap:10px;
-
-        margin-top:25px;
-
-    }
-
-}
-
 /* ===========================
    DISCOGRAFÍA
 =========================== */
+
+#vistaArtista{
+
+    display:none;
+
+}
+
+.cabecera-artista{
+
+    width: 90%;
+
+    max-width: 1100px;
+
+    margin: 50px auto 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 30px;
+}
+
+.avatar-artista-grande{
+
+    width: 140px;
+
+    height: 140px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: linear-gradient(135 deg, rgb(188, 84, 188), #6d2f6d);
+
+    color: white;
+
+    font-size: 4rem;
+
+    font-weight: bold;
+
+    flex-shrink: 0;
+
+}
+
+.info-artista {
+
+    text-align: left;
+
+}
+
+.info-artista h1{
+
+    margin: 0 0 12px;
+
+    color: #ddd;
+
+    font-size: 2.8rem;
+
+}
+
+.info-artista p{
+
+    margin: 6px 0;
+
+    color: #aaa;
+
+}
+
+#paisArtista{
+
+    color: #ccc;
+
+    font-size: 1.05rem;
+
+}
+
+.estadisticas-artista{
+
+    width: 90%;
+
+    max-width: 700px;
+
+    margin: 35px auto;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 70px;
+    
+    border-bottom: 1px solid #333;
+
+    padding-bottom: 35px;
+
+}
+
+.estadistica {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+.estadistica strong{
+
+    color: rgb(188, 84, 188);
+
+    font-size: 1.8rem;
+
+}
+
+.estadistica span{
+
+    color: #aaa;
+
+    font-size: .9rem;
+
+}
 
 .tarjeta-album {
     width: 200px;
@@ -357,6 +749,8 @@ nav a:hover {
     margin: 15px;
     border-radius: 10px;
     text-align: center;
+
+    cursor: pointer;
 }
 
 .tarjeta-album img{
@@ -364,15 +758,121 @@ nav a:hover {
     border-radius: 10px;
 }
 
-.grid-musica {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+.titulo-seccion {
+
+    margin: 0;
+
 }
 
-.titulo-seccion {
+.grid-musica {
+
+    display: grid;
+
+    grid-template-columns: repeat(6, 170px);
+
+    justify-content: center;
+
+    gap: 55px;
+
+}
+
+.grid-musica .tarjeta-album {
+
+    width: 170px;
+
+    padding: 0;
+
+    margin: 0;
+
+    border-radius: 10px;
+
     text-align: center;
-    margin-top: 40px;
+
+    cursor: pointer;
+
+}
+
+.grid-musica .tarjeta-album img {
+
+    width: 170px;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+    display: block;
+
+    border-radius: 12px;
+
+}
+
+.grid-musica .tarjeta-album h3{
+
+    width: 100%;
+
+    text-align: center;
+
+    margin: 10px 0 5px;
+
+}
+
+.grid-musica .tarjeta-album p{
+    width: 100%;
+
+    text-align: center;
+
+    margin: 0;
+
+}
+
+.cabecera-seccion{
+
+    width: 90%;
+
+    max-width: 1400px;
+
+    margin: 60px auto 30px;
+    
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom: 1px solid #333;
+
+    padding-bottom: 15px;
+
+}
+
+.cabecera-seccion button{
+
+    background: #2a2a2a;
+
+    color: #ddd;
+
+    border: 1px solid #444;
+
+    border-radius: 8px;
+
+    padding: 7px 14px;
+
+    font-size: .85rem;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+.cabecera-seccion button:hover{
+
+    background: rgb(188, 84, 188);
+
+    color: white;
+
+    border-color: rgb(188, 84, 188);
+
 }
 
 /* =========================
@@ -482,7 +982,142 @@ nav a:hover {
 =========================== */
 
 @media (max-width: 1000px){
+
     .detalle-album{
         grid-template-columns: 1fr;
     }
+
+    .grid-musica {
+        grid-template-columns: repeat(4, 170px);
+        gap: 35px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    header{
+
+        flex-direction:column;
+
+        height:auto;
+
+        gap:20px;
+
+        padding:20px;
+
+    }
+
+    nav ul{
+
+        gap:20px;
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+    }
+
+    .hero{
+
+        min-height:auto;
+
+        padding:80px 20px;
+
+    }
+
+    .hero-contenido{
+
+        width:100%;
+
+    }
+
+    .hero h1{
+
+        font-size:2.3rem;
+
+    }
+
+    .hero p{
+
+        font-size:1rem;
+
+        padding:0 10px;
+
+    }
+
+    .buscador{
+
+        width:100%;
+
+        margin-top:30px;
+
+    }
+
+    .hero-tags{
+
+        gap:10px;
+
+        margin-top:25px;
+
+    }
+
+}
+
+@media (max-width: 700px) {
+
+    .grid-musica {
+        grid-template-columns: repeat(3, 150px);
+        gap: 25px;
+    }
+
+    .grid-musica .tarjeta-album {
+        width: 150px;
+    }
+
+    .grid-musica .tarjeta-album img {
+        width: 150px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .cabecera-artista {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .estadisticas-artista {
+        justify-content: center;
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 520px) {
+
+    .grid-musica {
+        grid-template-columns: repeat(2, 140px);
+        gap: 25px;
+    }
+
+    .grid-musica .tarjeta-album {
+        width: 140px;
+    }
+
+    .grid-musica .tarjeta-album img {
+        width: 140px;
+    }
+
+    .cabecera-seccion {
+        gap: 15px;
+    }
+
+    .cabecera-seccion button {
+        padding: 6px 10px;
+        font-size: .8rem;
+    }
+
 }

@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="css/style.css">
 
-    <title>Musica</title>
+    <title>MusicApp</title>
 </head>
 <body>
 
@@ -24,7 +24,9 @@
 
             <ul>
 
-                <li><a href="#">Inicio</a></li>
+                <li><a href="#" onclick="mostrarInicio()">
+                    Inicio
+                </a></li>
 
                 <li><a href="#">Explorar</a></li>
 
@@ -46,7 +48,7 @@
 
     </header>
 
-    <main>
+    <main id="vistaInicio">
 
         <section class="hero">
 
@@ -95,17 +97,132 @@
 
         </section>
 
-        <h2 id="resultado"></h2>
+        <section class="tendencias">
 
-        <div id="artistaSeleccionado"></div>
+            <h2 class="titulo-seccion">
+                Tendencias
+            </h2>
 
-        <div id="albumes"></div>
+            <p class="subtitulo-seccion">
+                Descubrí algunos de los artistas más populares del momento.
+            </p>
 
-        <div id="eps"></div>
+            <div id="gridTendencias" class="grid-tendencias">
 
-        <div id="singles"></div>
+            </div>
 
-        <div id="detalleAlbum" class="detalle-album"></div>
+        </section>
+
+        <section id="descubrir">
+
+            <div class="card-descubrir">
+
+                <h2>
+                    🎲 Descubrí un artista
+                </h2>
+
+                <p>
+                    ¿No sabés qué escuchar?
+                    Elegí un artista al azar y explorá toda su discografía.
+                </p>
+
+                <button id="btnDescubrir" onclick="descubrirArtista()">
+                    Descubrí
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <main id="vistaArtista">
+
+        <div class="buscador-artista">
+
+            <span class="icono-busqueda">
+                🔍
+            </span>
+
+            <input
+                id="busquedaArtista"
+                type="text"
+                placeholder="Buscar otro artista..."
+            >
+
+        </div>
+
+        <div id="autocompleteArtista"></div>
+
+        <div class="cabecera-artista">
+
+            <div class="avatar-artista-grande">
+                G
+            </div>
+
+            <div class="info-artista">
+
+                <h1 id="nombreArtista">
+                    
+                </h1>
+
+                <p id="paisArtista">
+                    
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="estadisticas-artista">
+
+            <div class="estadistica">
+
+                <strong id="cantidadAlbumes">
+                    0
+                </strong>
+
+                <span>Álbumes</span>
+
+            </div>
+
+            <div class="estadistica">
+
+                <strong id="cantidadEps">
+                    0
+                </strong>
+
+                <span>EPs</span>
+
+            </div>
+
+            <div class="estadistica">
+
+                <strong id="cantidadSingles">
+                    0
+                </strong>
+
+                <span>Singles</span>
+
+            </div>
+
+        </div>
+
+        <section id="artista">
+            
+            <h2 id="resultado"></h2>
+
+            <div id="artistaSeleccionado"></div>
+
+            <div id="albumes"></div>
+
+            <div id="eps"></div>
+
+            <div id="singles"></div>
+
+            <div id="detalleAlbum" class="detalle-album"></div>
+
+        </section>
 
     </main>
 

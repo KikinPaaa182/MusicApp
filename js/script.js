@@ -4,7 +4,31 @@
 
 let artistaActual = {};
 
+const artistasTendencia = [
+
+    "Green Day",
+    "Justin Bieber",
+    "Duki",
+    "Charly Garcia",
+    "Oasis"
+
+];
+
+// ==========================
+// INICIO
+// ==========================
+
+function cargarInicio(){
+
+    cargarTendencias();
+
+}
+
+let mostrarTodosAlbumes = false;
+let mostrarTodosEps = false;
 let mostrarTodosSingles = false;
+
+let recargandoDiscografia = false;
 
 // ==========================
 // BUSCADOR
@@ -17,18 +41,19 @@ function buscarArtista() {
     let artistaBuscado =
         document.getElementById("busqueda").value;
 
-    fetch(`https://musicbrainz.org/ws/2/artist/?query=${artistaBuscado}&fmt=json`)
+        fetch(`https://musicbrainz.org/ws/2/artist/?query=${artistaBuscado}&fmt=json`)
         .then(respuesta => respuesta.json())
         .then(datos => {
 
             let html = "";
 
-            html += `<h2>Resultados encontrados: ${datos.count}</h2>`;
+            html += `<h2>
+                        Resultados encontrados: ${datos.count}
+                    </h2>`;
 
             datos.artists.forEach(artista => {
             console.log(datos.artists);
         
-
             html += `
                 <div>
 
@@ -59,29 +84,86 @@ function buscarArtista() {
 
             document.getElementById("resultado").innerHTML = html;
 
-            
         });
     }
+
+// ==========================
+// TENDENCIAS
+// ==========================
+
+function cargarTendencias(){
+
+    let html = "";
+
+    artistasTendencia.forEach(artista=>{
+        console.log(artista);
+        fetch(`https://musicbrainz.org/ws/2/artist/?query=${artista}&fmt=json`)
+        .then(respuesta=>respuesta.json())
+        .then(datos=>{
+
+            console.log(datos);
+            
+            let a = datos.artists[0];
+            console.log(a);
+
+            html += `
+
+                <div class="tarjeta-artista"
+                    onclick="verAlbumes(
+                    '${a.id}',
+                    '${a.name}',
+                    '${a.country || ""}',
+                    '${a.area?.name || ""}',
+                    '${a["life-span"]?.begin || ""}'
+                    )">
+
+                    <div class="avatar-artista">
+                        ${a.name.charAt(0).toUpperCase()}
+                    </div>
+
+                    <h3>
+                        ${a.name}
+                    </h3>
+
+                    <p class="pais-artista">
+                        ${a.country || a.area?.name || "Desconocido"}
+                    </p>
+
+                    <p class="estado-artista">
+                        Ver discografía →
+                    </p>
+
+                </div>
+
+            `;
+
+            document.getElementById("gridTendencias").innerHTML = html;
+
+        });
+    });
+
+}
 
 // ==========================
 // AUTOCOMPLETE
 // ==========================
 
-function autocompleteArtistas(){
+function autocompleteArtistas(
+    inputId,
+    autocompleteId
+){
 
-    let texto = document.getElementById("busqueda").value;
+    let texto = document.getElementById(inputId).value;
 
-    if(texto.length < 2){
+        if(texto.length < 2){
 
-        document.getElementById("autocomplete").style.display = "none";
+            document.getElementById(autocompleteId).style.display = "none";
 
-    return;
-    }
+            return;
+        }
 
-    fetch(`https://musicbrainz.org/ws/2/artist/?query=${texto}&fmt=json`)
-
+        fetch(`https://musicbrainz.org/ws/2/artist/?query=${texto}&fmt=json`)
         .then(respuesta => respuesta.json())
-
         .then(datos => {
             let html = "";
 
@@ -109,19 +191,16 @@ function autocompleteArtistas(){
                     <hr>
 
                 </div>
-                `;
+            `;
         });
 
-            document.getElementById("autocomplete").innerHTML = html;
+            document.getElementById(autocompleteId).innerHTML = html;
+            document.getElementById(autocompleteId).style.display = "block";
 
-            document.getElementById("autocomplete").style.display = "block";
-
-    })
-        
+        })        
 }
 
 function seleccionarArtista(id, nombre, pais, area, inicio){
-
 
     document.getElementById("busqueda").value = "";
     document.getElementById("busqueda").blur();
@@ -130,15 +209,50 @@ function seleccionarArtista(id, nombre, pais, area, inicio){
     document.getElementById("autocomplete").style.display = "none";
 
     verAlbumes(id, nombre, pais, area, inicio);
-
 }
 
+// ==========================
+// DESCUBRIR
+// ==========================
+
+function descubrirArtista(){
+    let numero =
+    Math.floor(Math.random()*artistasTendencia.length);
+
+    let artista = artistasTendencia[numero];
+
+    fetch(`https://musicbrainz.org/ws/2/artist/?query=${artista}&fmt=json`)
+    .then(respuesta=>respuesta.json())
+    .then(datos=>{
+
+        console.log(datos);
+            
+        if (!datos.artists || datos.artists.length === 0) {
+            console.log("MusicBrainz no devolvió artistas.");
+            return;
+        }
+
+        let a = datos.artists[0];
+        console.log(a);
+        console.log(a.id);
+        console.log(a.name);
+        verAlbumes(
+            a.id,
+            a.name,
+            a.country || "",
+            a.area?.name || "",
+            a["life-span"]?.begin || ""
+        );
+    });
+}
 
 // ==========================
 // ARTISTA
 // ==========================
 
 function verAlbumes(id, nombre, pais, area, inicio) {
+    
+    mostrarArtista();
 
     artistaActual = {
     id: id,
@@ -148,45 +262,87 @@ function verAlbumes(id, nombre, pais, area, inicio) {
     inicio: inicio
 };
 
+    if (!recargandoDiscografia) {
+
+        mostrarTodosAlbumes = false;
+        mostrarTodosEps = false;
+        mostrarTodosSingles = false;
+
+    }
+
+    document.getElementById("nombreArtista").textContent = nombre;
+
+    document.getElementById("paisArtista").textContent =
+        area || pais || "Desconocido";
+
+    document.querySelector(".avatar-artista-grande").textContent =
+        nombre.charAt(0).toUpperCase();
+
+    document.getElementById("busquedaArtista").value = nombre;
+
+    document.getElementById("autocompleteArtista").innerHTML = "";
+    document.getElementById("autocompleteArtista").style.display = "none";
+
     document.getElementById("resultado").innerHTML = "";
 
-    document.getElementById("artistaSeleccionado").innerHTML = `
+    document.getElementById("artistaSeleccionado").innerHTML = "";
 
-        <h2>${nombre}</h2>
-
-        <p>
-            País:
-            ${pais || area || "Desconocido"}
-        </p>
-
-        <p>
-            Inicio:
-            ${inicio || "Desconocido"}
-        </p>
-
-        <button onclick="volverBusqueda()">
-            ⬅ Volver
-        </button>
-
-        <hr>
-
-    `;
-
-    fetch(`https://musicbrainz.org/ws/2/release-group?artist=${id}&limit=100&fmt=json`)
+        fetch(`https://musicbrainz.org/ws/2/release-group?artist=${id}&limit=100&fmt=json`)
 
         .then(respuesta => respuesta.json())
 
         .then(datos => {
 
             let htmlAlbumes = "";
-
             let htmlSingles = "";
-
             let htmlEPs = "";
 
-            let contadorSingles = 0;
+            let contadorAlbumes = 0;
+            let totalAlbumes = 0;
 
+            let contadorEps = 0;
+            let totalEps = 0;
+
+            let contadorSingles = 0;
             let totalSingles = 0;
+
+            console.log(datos);
+            
+            if (!datos["release-groups"]) {
+                console.log("MusicBrainz no devolvió release-groups.");
+                return;
+            }
+
+            let cantidadAlbumes = 0;
+
+            let cantidadEps = 0;
+
+            let cantidadSingles = 0;
+
+            datos["release-groups"].forEach(proyecto => {
+
+                if (proyecto["primary-type"] === "Album") {
+                    cantidadAlbumes++;
+                }
+
+                if (proyecto["primary-type"] === "EP") {
+                    cantidadEps++;
+                }
+
+                if (proyecto["primary-type"] === "Single") {
+                    cantidadSingles++;
+                }
+
+            });
+
+            document.getElementById("cantidadAlbumes").textContent =
+                cantidadAlbumes;
+
+            document.getElementById("cantidadEps").textContent =
+                cantidadEps;
+
+            document.getElementById("cantidadSingles").textContent =
+                cantidadSingles;
 
             datos["release-groups"].sort((a, b) => {
 
@@ -200,10 +356,14 @@ function verAlbumes(id, nombre, pais, area, inicio) {
             datos["release-groups"].forEach(album => {
 
                 if(album.status === "Cancelled"){
-    return;
-}
+                return;
+            }
 
                 if (album["primary-type"] === "Album") {
+
+                    totalAlbumes++;
+
+                    if (mostrarTodosAlbumes || contadorAlbumes < 6){
 
                 htmlAlbumes+= `
                         <div class="tarjeta-album"
@@ -219,20 +379,28 @@ function verAlbumes(id, nombre, pais, area, inicio) {
                         alt="${album.title}"
                         onerror="this.src='img/sin-portada.png'">
 
-                        <h3>${album.title}</h3>
+                        <h3>
+                            ${album.title}
+                        </h3>
 
                         <p>
                             ${album["first-release-date"]?.substring(0,4) || "Desconocido"}
                         </p>
 
                     </div>
-                `;
+                `;}
+                        
+                        contadorAlbumes++
 
                 }
 
                 if (album["primary-type"] === "EP") {
 
-                htmlEPs += `
+                    totalEps++;
+
+                    if (mostrarTodosEps || contadorEps < 6){
+
+                    htmlEPs += `
                     <div class="tarjeta-album"
                         onclick="verDetalleAlbum(
                         '${album.id}',
@@ -246,14 +414,18 @@ function verAlbumes(id, nombre, pais, area, inicio) {
                         alt="${album.title}"
                         onerror="this.src='img/sin-portada.png'">
 
-                        <h3>${album.title}</h3>
+                        <h3>
+                            ${album.title}
+                        </h3>
 
                         <p>
                             ${album["first-release-date"]?.substring(0,4) || "Desconocido"}
                         </p>
 
                     </div>
-                `;
+                `;}
+                        
+                        contadorEps++
 
                 }
 
@@ -261,98 +433,155 @@ function verAlbumes(id, nombre, pais, area, inicio) {
 
                     totalSingles++;
 
-                    if(mostrarTodosSingles || contadorSingles < 5){
+                    if(mostrarTodosSingles || contadorSingles < 6){
 
-                htmlSingles += `
-                    <div class="tarjeta-album"
-                        onclick="verDetalleAlbum(
-                        '${album.id}',
-                        '${album.title}',
-                        '${album["first-release-date"]}',
-                        '${album["primary-type"]}'
-                        )">
+                    htmlSingles += `
+                        <div class="tarjeta-album"
+                            onclick="verDetalleAlbum(
+                            '${album.id}',
+                            '${album.title}',
+                            '${album["first-release-date"]}',
+                            '${album["primary-type"]}'
+                            )">
 
-                        <img
-                        src="https://coverartarchive.org/release-group/${album.id}/front"
-                        alt="${album.title}"
-                        onerror="this.src='img/sin-portada.png'">
+                            <img
+                            src="https://coverartarchive.org/release-group/${album.id}/front"
+                            alt="${album.title}"
+                            onerror="this.src='img/sin-portada.png'">
 
-                        <h3>${album.title}</h3>
+                            <h3>
+                                ${album.title}
+                            </h3>
 
-                        <p>
-                            ${album["first-release-date"]?.substring(0,4) || "Año desconocido"}
-                        </p>
+                            <p>
+                                ${album["first-release-date"]?.substring(0,4) || "Año desconocido"}
+                            </p>
+
+                        </div>
+                    `;}
+
+                        contadorSingles++;
+
+                    }
+
+                });
+
+                let botonAlbumes = "";
+                let botonEps = "";
+                let botonSingles = "";
+
+                    if(totalAlbumes > 6 && !mostrarTodosAlbumes){
+
+                        botonAlbumes = `
+                            <button onclick="mostrarMasAlbumes()">
+                                Mostrar más
+                            </button>
+                        `;
+
+                    }
+                
+                    if(totalEps > 6 && !mostrarTodosEps){
+
+                        botonEps = `
+                            <button onclick="mostrarMasEps()">
+                                Mostrar más
+                            </button>
+                        `;
+
+                    }
+
+                    if(totalSingles > 6 && !mostrarTodosSingles){
+
+                        botonSingles = `
+                            <button onclick="mostrarMasSingles()">
+                                Mostrar más
+                            </button>
+                        `;
+
+                    }
+
+                if(htmlAlbumes !== "") {
+
+                    document.getElementById("albumes").innerHTML = `
+                        
+                    <div class="cabecera-seccion">
+
+                        <h2 class="titulo-seccion">
+                            Álbumes
+                        </h2>
+
+                        ${botonAlbumes}
 
                     </div>
-                `;}
 
-                    contadorSingles++;
+                        <div class="grid-musica">
 
-                }
+                            ${htmlAlbumes}
 
-            });
+                        </div>
 
-            let botonMostrarMas = "";
-
-                if(totalSingles > 5 && !mostrarTodosSingles){
-
-                    botonMostrarMas = `
-                        <button onclick="mostrarMasSingles()">
-                            Mostrar más
-                        </button>
                     `;
 
+                } else {
+
+                    limpiarDiscografia();
+
                 }
 
-            if(htmlAlbumes !== "") {
+                if(htmlEPs !== "") {
 
-                document.getElementById("albumes").innerHTML = `
-                    <h2 class="titulo-seccion">Álbumes</h2>
+                    document.getElementById("eps").innerHTML = `
 
-                    <div class="grid-musica">
-                        ${htmlAlbumes}
-                    </div>
-                `;
+                    <div class="cabecera-seccion">
 
-            } else {
+                        <h2 class="titulo-seccion">
+                            EPs
+                        </h2>
 
-                limpiarDiscografia();
+                        ${botonEps}
 
-            }
-
-            if(htmlEPs !== "") {
-
-                document.getElementById("eps").innerHTML = `
-                    <h2 class="titulo-seccion">EPs</h2>
-
-                    <div class="grid-musica">
-                        ${htmlEPs}
-                    </div>
-                `;
-
-            } else {
-
-                limpiarDiscografia();
-
-            }
-
-            if(htmlSingles !== "") {
-
-                document.getElementById("singles").innerHTML = `
-                    <h2 class="titulo-seccion">Singles</h2>
-
-                    <div class="grid-musica">
-                        ${htmlSingles}
                     </div>
 
-                    ${botonMostrarMas}
-                `;
+                        <div class="grid-musica">
 
-            } else {
+                            ${htmlEPs}
 
-                limpiarDiscografia();
+                        </div>
 
-            }
+                    `;
+
+                } else {
+
+                    limpiarDiscografia();
+
+                }
+
+                if(htmlSingles !== "") {
+
+                    document.getElementById("singles").innerHTML = `
+
+                    <div class="cabecera-seccion">
+
+                        <h2 class="titulo-seccion">
+                            Singles
+                        </h2>
+
+                        ${botonSingles}
+
+                    </div>
+
+                        <div class="grid-musica">
+
+                            ${htmlSingles}
+
+                        </div>
+                    `;
+
+                } else {
+
+                    limpiarDiscografia();
+
+                }
 
         });
 
@@ -376,62 +605,84 @@ function verDetalleAlbum(id, titulo, fecha, tipo) {
     // Mostrar detalle del álbum
     document.getElementById("detalleAlbum").innerHTML = `
 
-    <div class="contenedor-album">
-    
-        <div class="panel-izquierdo">
+        <div class="contenedor-album">
+        
+            <div class="panel-izquierdo">
 
-            <img
-                class="portada-grande"
-                src="https://coverartarchive.org/release-group/${id}/front"
-                alt="${titulo}"
-                onerror="this.src='img/sin-portada.png'">
+                <img class="portada-grande"
+                    src="https://coverartarchive.org/release-group/${id}/front"
+                    alt="${titulo}"
+                    onerror="this.src='img/sin-portada.png'">
 
-            <div class="info-album">
-                <h1>${titulo}</h1>
+                <div class="info-album">
 
-                <p class="tipo-album">${tipo}</p>
+                    <h1>
+                        ${titulo}
+                    </h1>
 
-                <p class="dato-album">
-                    ${fecha ? fecha.substring(0,4) : "Desconocido"}
+                    <p class="tipo-album">
+                        ${tipo}
+                    </p>
+
+                    <p class="dato-album">
+                        ${fecha ? fecha.substring(0,4) : "Desconocido"}
+                    </p>
+
+                    <p class="dato-album">
+                        Género: Desconocido
+                    </p>
+
+                    <p class="dato-album">
+                        Canciones: --
+                    </p>
+
+                    <p class="dato-album">
+                        Duración: -- min
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="panel-centro">
+                <h2>
+                    Canciones
+                </h2>
+
+                <div class="cancion-placeholder">
+                    1. Las canciones se cargarán desde MusicBrainz
+                </div>
+
+                <div class="cancion-placeholder">
+                    2. Aquí veremos número, título, artista, estrellas y duración
+                </div>
+
+                <div class="cancion-placeholder">
+                    3. Próximo sprint: conexión con la API de tracks
+                </div>
+            </div>
+
+            <div class="panel-derecho">
+                <h3>
+                    Artista
+                </h3>
+
+                <p class="dato-artista">
+                    ${artistaActual.nombre}
                 </p>
 
-                <p class="dato-album">Género: Desconocido</p>
+                <p class="dato-artista">
+                    ${artistaActual.pais || artistaActual.area || "Desconocido"}
+                </p>
 
-                <p class="dato-album">Canciones: --</p>
+                <p class="dato-artista">
+                    ${artistaActual.inicio || "Desconocido"}
+                </p>
 
-                <p class="dato-album">Duración: -- min</p>
+                <button class="boton-artista" onclick="volverAlArtista()">
+                    ⬅ Volver al artista
+                </button>
             </div>
-        </div>
-
-        <div class="panel-centro">
-            <h2>Canciones</h2>
-
-            <div class="cancion-placeholder">
-                1. Las canciones se cargarán desde MusicBrainz
-            </div>
-
-            <div class="cancion-placeholder">
-                2. Aquí veremos número, título, artista, estrellas y duración
-            </div>
-
-            <div class="cancion-placeholder">
-                3. Próximo sprint: conexión con la API de tracks
-            </div>
-        </div>
-
-        <div class="panel-derecho">
-            <h3>Artista</h3>
-
-            <p class="dato-artista"> ${artistaActual.nombre}</p>
-
-            <p class="dato-artista"> ${artistaActual.pais || artistaActual.area || "Desconocido"}</p>
-
-            <p class="dato-artista"> ${artistaActual.inicio || "Desconocido"}</p>
-
-            <button class="boton-artista" onclick="volverAlArtista()">
-                ⬅ Volver al artista
-            </button>
-        </div>
 
         </div>
     `;
@@ -453,6 +704,26 @@ function volverAlArtista(){
 }
 
 // ==========================
+// NAVEGACIÓN
+// ==========================
+
+function mostrarInicio(){
+
+    document.getElementById("vistaInicio").style.display = "block";
+
+    document.getElementById("vistaArtista").style.display = "none";
+
+}
+
+function mostrarArtista(){
+
+    document.getElementById("vistaInicio").style.display = "none";
+
+    document.getElementById("vistaArtista").style.display = "block";
+
+}
+
+// ==========================
 // UTILIDADES
 // ==========================
 
@@ -470,9 +741,11 @@ function limpiarPantalla(){
     document.getElementById("detalleAlbum").innerHTML = "";
 }
 
-function mostrarMasSingles(){
+function mostrarMasAlbumes() {
 
-    mostrarTodosSingles = true;
+    mostrarTodosAlbumes = true;
+
+    recargandoDiscografia = true;
 
     verAlbumes(
         artistaActual.id,
@@ -481,6 +754,44 @@ function mostrarMasSingles(){
         artistaActual.area,
         artistaActual.inicio
     );
+
+    recargandoDiscografia = false;
+
+}
+
+function mostrarMasEps() {
+
+    mostrarTodosEps = true;
+
+    recargandoDiscografia = true;
+
+    verAlbumes(
+        artistaActual.id,
+        artistaActual.nombre,
+        artistaActual.pais,
+        artistaActual.area,
+        artistaActual.inicio
+    );
+
+    recargandoDiscografia = false;
+
+}
+
+function mostrarMasSingles() {
+
+    mostrarTodosSingles = true;
+
+    recargandoDiscografia = true;
+
+    verAlbumes(
+        artistaActual.id,
+        artistaActual.nombre,
+        artistaActual.pais,
+        artistaActual.area,
+        artistaActual.inicio
+    );
+
+    recargandoDiscografia = false;
 
 }
 
@@ -498,6 +809,22 @@ inputBusqueda.addEventListener("keydown", function(event){
 
 inputBusqueda.addEventListener("input", function(){
 
-    autocompleteArtistas();
+    autocompleteArtistas(
+        "busqueda",
+        "autocomplete"
+    );
 
 });
+
+const inputBusquedaArtista = document.getElementById("busquedaArtista");
+
+inputBusquedaArtista.addEventListener("input", function(){
+
+    autocompleteArtistas(
+        "busquedaArtista",
+        "autocompleteArtista"
+    );
+
+});
+
+cargarInicio();
