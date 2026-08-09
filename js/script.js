@@ -9,7 +9,7 @@ const artistasTendencia = [
     "Green Day",
     "Justin Bieber",
     "Duki",
-    "Charly Garcia",
+    "Kendrick Lamar",
     "Oasis"
 
 ];
@@ -597,7 +597,7 @@ function volverBusqueda(){
 // DETALLE DEL ÁLBUM
 // ==========================
 
-function verDetalleAlbum(id, titulo, fecha, tipo) {
+function    verDetalleAlbum(id, titulo, fecha, tipo) {
 
     // Ocultar vista del artista
     limpiarPantalla();
@@ -628,16 +628,24 @@ function verDetalleAlbum(id, titulo, fecha, tipo) {
                         ${fecha ? fecha.substring(0,4) : "Desconocido"}
                     </p>
 
-                    <p class="dato-album">
-                        Género: Desconocido
+                    <p class="dato-album" id="paisLanzamiento">
+                        País: Cargando...
                     </p>
 
-                    <p class="dato-album">
-                        Canciones: --
+                    <p class="dato-album" id="estadoLanzamiento">
+                        Estado: Cargando...
                     </p>
 
-                    <p class="dato-album">
-                        Duración: -- min
+                    <p class="dato-album" id="generoLanzamiento">
+                        Género: Cargando...
+                    </p>
+
+                    <p class="dato-album" id="cantidadCanciones">
+                        Canciones: Cargando...
+                    </p>
+
+                    <p class="dato-album" id="duracionAlbum">
+                        Duración: Cargando...
                     </p>
 
                 </div>
@@ -648,18 +656,15 @@ function verDetalleAlbum(id, titulo, fecha, tipo) {
                 <h2>
                     Canciones
                 </h2>
+                
+                <div id="listaCanciones">
 
-                <div class="cancion-placeholder">
-                    1. Las canciones se cargarán desde MusicBrainz
+                    <p class="cancion-placeholder">
+                        Cargando canciones...
+                    </p>
+
                 </div>
 
-                <div class="cancion-placeholder">
-                    2. Aquí veremos número, título, artista, estrellas y duración
-                </div>
-
-                <div class="cancion-placeholder">
-                    3. Próximo sprint: conexión con la API de tracks
-                </div>
             </div>
 
             <div class="panel-derecho">
@@ -686,6 +691,226 @@ function verDetalleAlbum(id, titulo, fecha, tipo) {
 
         </div>
     `;
+
+    // Buscar los releases pertenecientes a este release-group
+    fetch(`https://musicbrainz.org/ws/2/release-group/${id}?inc=releases+tags&fmt=json`)
+        .then(respuesta => respuesta.json())
+        .then(datosAlbum => {
+
+            console.log("Release Group:", datosAlbum);
+
+            // Obtener géneros/tags
+            let genero = "Desconocido";
+
+            if (datosAlbum.tags && datosAlbum.tags.length > 0) {
+                genero = datosAlbum.tags
+                    .slice(0, 3)
+                    .map(tag => tag.name)
+                    .join(", ");
+            }
+
+            document.getElementById("generoLanzamiento").textContent =
+                `Género: ${genero}`;
+
+            // Buscar un release oficial
+            let release = datosAlbum.releases.find(
+                release => release.status === "Official"
+            );
+
+            // Si no encontramos uno oficial, usamos el primero
+            if (!release) {
+                release = datosAlbum.releases[0];
+            }
+
+            // Si directamente no hay releases
+            if (!release) {
+
+                document.getElementById("listaCanciones").innerHTML = `
+                    <p class="cancion-placeholder">
+                        No se encontraron canciones.
+                    </p>
+                `;
+
+                return;
+            }
+
+            console.log("Release elegido:", release);
+
+            // País del lanzamiento
+            document.getElementById("paisLanzamiento").textContent =
+                `País: ${release.country || "Desconocido"}`;
+
+            // Estado del lanzamiento
+            document.getElementById("estadoLanzamiento").textContent =
+                `Estado: ${release.status || "Desconocido"}`;
+
+            // Obtener las canciones del releas
+            return fetch(
+                `https://musicbrainz.org/ws/2/release/${release.id}?inc=recordings&fmt=json`
+            );
+        })
+
+        .then(respuesta => {
+
+            // Si el primer fetch no devolvió nada, no continuamos
+            if (!respuesta) return null;
+
+            return respuesta.json();
+        })
+
+        .then(datosRelease => {
+            if (!datosRelease) return;
+            console.log("Release con tracks:", datosRelease);
+
+            // Los tracks están dentro de media
+            let medios = datosRelease.media || [];
+
+            let hayTracks = medios.some(media =>
+                media.tracks && media.tracks.length > 0
+            );
+
+            // Si no encontramos tracks
+            if (!hayTracks) {
+
+                document.getElementById("listaCanciones").innerHTML = `
+                    <p class="cancion-placeholder">
+                        No se encontraron canciones.
+                    </p>
+                `;
+
+                return;
+            }
+
+            // Crear HTML de las canciones
+            let htmlCanciones = "";
+
+            let duracionTotal = 0;
+
+            medios.forEach((media, indice) => {
+
+                if (!media.tracks || media.tracks.length === 0) {
+                    return;
+                }
+
+                // Mostrar título del disco solamente si hay más de uno
+                if (medios.length > 1) {
+
+                    htmlCanciones += `
+
+                        <div class="titulo-disco">
+                            Disco ${media.position || indice + 1}
+                        </div>
+                    `;
+                }
+                    
+
+
+                media.tracks.forEach(track => {
+
+                    if (track.length) {
+                        duracionTotal += track.length;
+                    }
+
+                    let duracion = "Desconocida";
+
+                    if (track.length) {
+
+                        let minutos = Math.floor(track.length / 60000);
+
+                        let segundos = Math.floor(
+                            (track.length % 60000) / 1000
+                        );
+
+                        segundos = segundos
+                            .toString()
+                            .padStart(2, "0");
+
+                        duracion = `${minutos}:${segundos}`;
+                    }
+
+
+                    htmlCanciones += `
+                        <div class="cancion">
+
+                            <span class="numero-cancion">
+                                ${track.position}
+                            </span>
+
+                            <span class="nombre-cancion">
+                                ${track.title}
+                            </span>
+
+                            <span class="duracion-cancion">
+                                ${duracion}
+                            </span>
+
+                        </div>
+                    `;
+
+                });
+
+            });
+
+        let minutosTotales = Math.floor(
+            duracionTotal / 60000
+        );
+
+        let horas = Math.floor(minutosTotales / 60);
+        let minutos = minutosTotales % 60;
+
+        let textoDuracion = "";
+
+        if (horas > 0 && minutos > 0) {
+
+            textoDuracion =
+                `${horas} ${horas === 1 ? "hora" : "horas"} y ${minutos} minutos`;
+            
+        } else if (horas > 0) {
+
+            textoDuracion =
+                `${horas} ${horas === 1 ? "hora" : "horas"}`;
+
+        } else {
+
+            textoDuracion =
+                `${minutos} minutos`;
+
+        }
+
+
+        document.getElementById("duracionAlbum").textContent =
+            `Duración: ${textoDuracion}`;
+
+        document.getElementById("listaCanciones").innerHTML =
+            htmlCanciones;
+
+        // Calcular cantidad total de canciones
+        let cantidadTracks = 0;
+
+        medios.forEach(media => {
+
+            if (media.tracks) {
+                cantidadTracks += media.tracks.length;
+            }
+
+        });
+
+        // Actualizar cantidad de canciones
+        document.getElementById("cantidadCanciones").textContent =
+            `Canciones: ${cantidadTracks}`;
+
+    })
+
+    .catch(error => {
+        console.error("Error obteniendo canciones:", error);
+
+        document.getElementById("listaCanciones").innerHTML = `
+            <p class="cancion-placeholder">
+                No se pudieron cargar las canciones.
+            </p>
+        `;
+    });
+
 }
 
 function volverAlArtista(){
