@@ -1106,18 +1106,83 @@ nav a:hover {
    RESPONSIVE
    ========================================================= */
 
+/* =========================================================
+   NETBOOK / PANTALLAS GRANDES CON ANCHO LIMITADO
+   1280px o menos
+   ========================================================= */
+
+@media (max-width: 1300px) {
+
+    .grid-musica {
+
+        display: grid;
+
+        grid-template-columns: repeat(6, 170px);
+
+        justify-content: center;
+
+        gap: 25px;
+
+        width: 100%;
+
+        max-width: 800px;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        box-sizing: border-box;
+
+    }
+
+}
+
 
 /* =========================================================
    TABLET
-   1000px o menos
+   1200px o menos
    ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) and (max-height: 700px) {
+
+    .contenedor-album {
+        height: calc(100vh - 70px);
+
+        grid-template-columns:
+            180px
+            minmax(0, 1fr)
+            170px;
+
+        gap: 15px;
+    }
+
+    .portada-grande {
+        max-width: 170px;
+    }
+
+    .info-album h1 {
+        font-size: 22px;
+    }
+
+    .dato-album {
+        margin: 5px 0;
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 1200px) {
 
     /* ---------- HEADER ---------- */
 
     header {
-        padding: 15px 25px;
+        min-height: 90px;
+        height: auto;
+
+        padding: 20px 25px;
+
+        box-sizing: border-box;
+
+        flex-wrap: wrap;
     }
 
     .logo {
@@ -1174,8 +1239,26 @@ nav a:hover {
     /* ---------- GRID DE ÁLBUMES ---------- */
 
     .grid-musica {
-        grid-template-columns: repeat(4, 170px);
-        gap: 30px;
+
+        display: grid;
+
+        grid-template-columns: repeat(
+        auto-fit,
+        minmax(170px, 170px)
+        );
+
+    justify-content: center;
+
+    gap: 30px;
+
+    width: 100%;
+
+    max-width: 100%;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    box-sizing: border-box;
     }
 
 
@@ -1183,14 +1266,20 @@ nav a:hover {
 
     .contenedor-album {
 
+        height: calc(100vh - 80px);
+
+        min-height: 0;
+
         grid-template-columns:
-            220px
+            200px
             minmax(0, 1fr)
-            190px;
+            180px;
 
         gap: 20px;
 
-        width: 95%;
+        width: 94%;
+
+        box-sizing: border-box;
 
     }
 
@@ -1198,23 +1287,52 @@ nav a:hover {
     .portada-grande {
         width: 100%;
         max-width: 220px;
+        height: auto;
     }
 
 
     .panel-centro {
-        min-width: 0;
+        min-height: 0;
+
+        height: 100%;
+
+        overflow-y: auto;
+
+        padding-right: 10px;
     }
 
 
-    .panel-derecho {
-        min-width: 0;
-    }
+    .panel-izquierdo,
+.panel-derecho {
+    height: auto;
+
+    min-height: 0;
+
+    overflow: visible;
+}
 
 
     /* ---------- TEXTO DE DURACIÓN ---------- */
 
     .duracion-cancion {
         white-space: nowrap;
+    }
+
+}
+
+/* =========================================================
+   MÓVIL
+   900px o menos
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .grid-musica {
+        grid-template-columns: repeat(3, 170px);
+
+        gap: 25px;
+
+        max-width: 600px;
     }
 
 }
